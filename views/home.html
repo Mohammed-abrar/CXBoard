@@ -1,0 +1,304 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                <h4 class="page-title">
+                    <i class="fa fa-microphone fa-lg" aria-hidden="true"></i> All Voice Recordings</h4>
+            </div>
+            <!--<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"> 
+                          <a href="#" target="_blank" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">#</a>
+                          <ol class="breadcrumb tst1">
+                              <li><a href="#">Dashboard</a></li>
+                          </ol>
+                          </div>-->
+        </div>
+        <!--row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <h3 class="box-title">Overview</h3>
+                    <div id="voice-recordings" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <!--row -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="white-box">
+                    <button class="btn action">
+                        <i class="fa fa-phone fa-lg" aria-hidden="true"></i> Analyze Ongoing Call</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="white-box">
+                    <button class="btn action">
+                        <i class="fa fa-microphone fa-lg" aria-hidden="true"></i> Upload &amp; Analyze Recording</button>
+                </div>
+            </div>
+        </div>
+        <!--row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="white-box">
+                    <h3 class="box-title">Sentiment &amp; Emotion Tracker</h3>
+                    <ul class="list-inline text-right">
+                        <li>
+                            <h5>
+                                <i class="fa fa-circle m-r-5" style="color: #0b62a4"></i>Sadness</h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <i class="fa fa-circle m-r-5" style="color: #4da74d;"></i>Fear</h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <i class="fa fa-circle m-r-5" style="color: #7A92A3;"></i>Joy</h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <i class="fa fa-circle m-r-5" style="color: #afd8f8;"></i>Disgust</h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <i class="fa fa-circle m-r-5" style="color: #edc240"></i>Anger</h5>
+                        </li>
+                    </ul>
+                    <div id="NLUGraph" style="height: 370px;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="row">
+                    <div class="white-box">
+                        <h3 class="box-title">Audio Analysis</h3>
+                        <ul class="list-task ulnone">
+                            <li>
+                                <h5>
+                                    <i class="fa fa-circle m-r-5" style="color: #c2c2c2;"></i>Low Confidence</h5>
+                            </li>
+                            <li>
+                                <h5>
+                                    <i class="fa fa-circle m-r-5" style="color: #636363;"></i>Medium Confidence</h5>
+                            </li>
+                            <li>
+                                <h5>
+                                    <i class="fa fa-circle m-r-5" style="color: #020202"></i>High Confidence</h5>
+                            </li>
+                        </ul>
+                        <hr>
+                        <ul class="ulnone">
+                            <li>
+                                <i class="fa fa-circle m-r-5" style="color: #c2c2c2;"></i>Gender Inequality</li>
+                            <li>
+                                <i class="fa fa-circle m-r-5" style="color: #c2c2c2;"></i>Feminism</li>
+                            <li>
+                                <i class="fa fa-circle m-r-5" style="color: #020202"></i>Presidential System</li>
+                            <li>
+                                <i class="fa fa-circle m-r-5" style="color: #c2c2c2;"></i>Executive Director</li>
+                            <li>
+                                <i class="fa fa-circle m-r-5" style="color: #020202"></i>Women</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="white-box">
+                        <h3 class="box-title">Speaker Information</h3>
+                        <div class="comment-center">
+                            <div class="comment-body">
+                                <div class="user-img">
+                                    <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle">
+                                </div>
+                                <div class="mail-contnet">
+                                    <h5>Speaker 1</h5>
+                                    <p>Age: x </p>
+                                </div>
+                                <div class="text-right">
+                                    <p>5m</p>
+                                </div>
+                            </div>
+                            <div class="comment-body">
+                                <div class="user-img">
+                                    <img src="../plugins/images/users/sonu.jpg" alt="user" class="img-circle"> </div>
+                                <div class="mail-contnet">
+                                    <h5>Speaker 2</h5>
+                                    <p>Age: x </p>
+                                </div>
+                                <div class="text-right">
+                                    <p>5m</p>
+                                </div>
+                            </div>
+                            <div class="comment-body b-none">
+                                <div class="user-img">
+                                    <img src="../plugins/images/users/arijit.jpg" alt="user" class="img-circle"> </div>
+                                <div class="mail-contnet">
+                                    <h5>Speaker 3</h5>
+                                    <p>Age: x </p>
+                                </div>
+                                <div class="text-right">
+                                    <p>5m</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="white-box">
+                        <h3 class="box-title">Data Behind your Personality</h3>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-6">
+                                <h3 class="box-title center">Big 5</h3>
+                                <h3 class="grey-box">Openness</h3>
+                                <table class="table borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="txt-oflo">Adventurousness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Artistic interests</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Emotionality</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Imagination</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Intellect</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Authority-challenging</td>
+                                            <td>95%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h3 class="grey-box">Conscientiousness</h3>
+                                <table class="table borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="txt-oflo">Achievement Striving</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Cautiousness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Emotionality</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Dutifulness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Orderliness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Self-Discipline</td>
+                                            <td>95%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-4 col-sm-6">
+                                <h3 class="box-title center">Needs</h3>
+                                <table class="table borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="txt-oflo">Adventurousness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Artistic interests</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Emotionality</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Imagination</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Intellect</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Authority-challenging</td>
+                                            <td>95%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                                <h3 class="box-title center">Values</h3>
+                                <table class="table borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="txt-oflo">Achievement Striving</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Cautiousness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Emotionality</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Dutifulness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Orderliness</td>
+                                            <td>95%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="txt-oflo">Self-Discipline</td>
+                                            <td>95%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="white-box">
+                        <h3 class="box-title">Visualization of Personality Data</h3>
+                        <div id="sunburstChart"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+        <footer class="footer text-center">&copy;CXBoard</footer>
+    </div>
+    <!-- /#page-wrapper -->
+</div>
+<script>
+    // v3 personality profile - version MUST be specified in the constructor for PersonalitySunburstChart
+    $.getJSON('1234.json', '', function (profile) {
+        var chart = new PersonalitySunburstChart({ 'selector': '#sunburstChart', 'version': 'v2' });
+        chart.show(profile, '../plugins/images/users/male.png');
+    });
+</script>
+ <script src="/js/jquery.slimscroll.js"></script>
+ <!--Wave Effects -->
+ <script src="/js/waves.js"></script>
+ <script src="/js/custom.min.js"></script>
+ <script src="/js/dashboard1.js"></script>
+ <script src="/js/toastr.js"></script>
