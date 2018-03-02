@@ -31,56 +31,26 @@ app.controller('themes', function ($scope, $http) {
 
 	var timeVSsentiment = [];
 	$http.get('/themesbytime').then(function (response) {
+		var brand = 0, service = 0, employee = 0, product = 0, price = 0;
 		for (var i = 0; i < response.data.aggregations["0"].results.length; i++) {
-			dataOfThemesByTime.push({ x: response.data.aggregations["0"].results[i].key_as_string, y: response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results["0"].aggregations["0"].value });
-		}
-		drawLineGraph('themesbytime', dataOfThemesByTime, ['breakdown'], "Time", 'y');
-
-
-
-		for (var i = 0; i < response.data.results.length; i++) {
-			console.log(response.data.results[i]);
-
-			if (response.data.results[i].brand) {
-				brand.push({ "time": response.data.results[i].time, brand: response.data.results[i].enriched_text.sentiment.document.score });
-				timeVSsentiment.push({ x: response.data.results[i].time, y: response.data.results[i].enriched_text.sentiment.document.score, a: response.data.results[i].enriched_text.entities["0"].sentiment.score });
-			}
-
-			for (var j = 0; j <response.data.results[i].enriched_text.entities.length; j++) {
-				if (response.data.results[i].enriched_text.entities["0"].type == "EMPLOYEE") {
-					employee.push(response.data.results[i].enriched_text.entities[j].sentiment.score)
-
+			for (var j = 0; j < response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results.length; j++) {
+				switch (response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].key) {
+					case 'PRODUCT': service = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+						break;
+					case 'EMPLOYEE': employee = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+						break;
+					case 'SERVICE': product = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+						break;
+					case 'PRICE': price = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+						break;
+					
 				}
-				if (response.data.results[i].enriched_text.entities["1"].type == "EMPLOYEE") {
-					employee.push(response.data.results[i].enriched_text.entities[j].sentiment.score)
-
-				}
-				// if (response.data.results[i].enriched_text.entities[j].type == "ORGANIZATION") {
-				// 	org.push(response.data.results[i].enriched_text.entities[j].sentiment.score)
-
-				// }
-
-				// if (response.data.results[i].enriched_text.entities[j].type == "PRICE") {
-				// 	price.push(response.data.results[i].enriched_text.entities[j].sentiment.score)
-
-				// }
 			}
-
-
-
-
+			brand = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results["0"].aggregations["0"].value;
+			dataOfThemesByTime.push({ x: response.data.aggregations["0"].results[i].key_as_string, brand: brand.toFixed(2),price : price.toFixed(2), product: product.toFixed(2), employee: employee.toFixed(2), service: service.toFixed(2) });
+			brand = 0 , service = 0 ,employee = 0, product = 0;
 		}
-		console.log(timeVSsentiment);
-		console.log("________________BRAND____________________");
-		console.log(brand);
-		console.log("________________EMPLOYEE____________________");
-		console.log(employee);
-		console.log("________________PRICE____________________");
-		console.log(price);
-		console.log("________________ORGANIZATION____________________");
-		console.log(org);
-		drawLineGraph('series', timeVSsentiment, ['Brand', 'Employee'], "Time", ['y', 'a']);
-
+		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service' , 'Employee' ], "Time", ['brand', 'price', 'product', 'service', 'employee' ]);
 	});
 });
 
@@ -90,7 +60,7 @@ function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
 		data: data,
 		xkey: 'x',
 		ykeys: yKeys,
-		lineColors: ['#0ec888', 'red'],
+		lineColors: ['#0c4cb2', '#ed8610','#edda0f', '#0ac933', '#890ac9'],
 		labels: labels,
 		lineWidth: 7,
 		xLabels: xLabels
