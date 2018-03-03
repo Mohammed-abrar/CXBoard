@@ -52,8 +52,7 @@ app.controller('themes', function ($scope, $http) {
 		}
 		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service' , 'Employee' ], "Time", ['brand', 'price', 'product', 'service', 'employee' ]);
 	});
-});
-
+	
 function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
 	Morris.Line({
 		element: elementname,
@@ -66,3 +65,4 @@ function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
 		xLabels: xLabels
 	});
 }
+});
