@@ -80,14 +80,16 @@ app.controller('themes', function ($scope, $http) {
 			xLabels: xLabels
 		});
 	}
-	function drawtThemesByGroup(data) {
-		
+	function drawtThemesByGroup(data) {		
 		Highcharts.chart('themesByGroup', {
 			chart: {
 				type: 'scatter'
 			},
 			title: {
 				text: 'GROUP AND SENTIMENT'
+			},
+			yAxis : {
+				title : { text : 'Sentiments' }
 			},
 			xAxis: {
 				categories: ['ORGANIZATION', 'SERVICE', 'PRODUCT', 'PRICE', 'EMPLOYEE']
