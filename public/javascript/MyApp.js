@@ -23,6 +23,7 @@ app.config(function ($routeProvider) {
 
 app.controller('themes', function ($scope, $http) {
 	var dataOfThemesByTime = [];
+	var graphData = [];
 	var brand = [];
 	var employee = [];
 	var product = [];
@@ -43,26 +44,59 @@ app.controller('themes', function ($scope, $http) {
 						break;
 					case 'PRICE': price = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
 						break;
-					
+
 				}
 			}
 			brand = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results["0"].aggregations["0"].value;
-			dataOfThemesByTime.push({ x: response.data.aggregations["0"].results[i].key_as_string, brand: brand.toFixed(2),price : price.toFixed(2), product: product.toFixed(2), employee: employee.toFixed(2), service: service.toFixed(2) });
-			brand = 0 , service = 0 ,employee = 0, product = 0;
+			dataOfThemesByTime.push({ x: response.data.aggregations["0"].results[i].key_as_string, brand: brand.toFixed(2), price: price.toFixed(2), product: product.toFixed(2), employee: employee.toFixed(2), service: service.toFixed(2) });
+			brand = 0, service = 0, employee = 0, product = 0;
 		}
-		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service' , 'Employee' ], "Time", ['brand', 'price', 'product', 'service', 'employee' ]);
+		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service', 'Employee'], "Time", ['brand', 'price', 'product', 'service', 'employee']);
+		$http.get('/themesbygroup').then(function (response) {
+			for (var i = 0; i < response.data.aggregations["0"].results.length; i++) {
+				var result = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results;
+				var datapoints = [];
+				for (var j = 0; j < result.length; j++) {
+					datapoints[result[j].key] = result[j].aggregations["0"].value.toFixed(2);
+				}
+				graphData[i] = { name: response.data.aggregations["0"].results[i].key, data: [parseFloat(datapoints['ORGANIZATION']), parseFloat(datapoints['SERVICE']), parseFloat(datapoints['PRODUCT']), parseFloat(datapoints['PRICE']), parseFloat(datapoints['EMPLOYEE'])] };
+				console.log(graphData[i]);
+			}
+			console.log(graphData);
+			drawtThemesByGroup(graphData);
+		});
+
 	});
-	
-function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
-	Morris.Line({
-		element: elementname,
-		data: data,
-		xkey: 'x',
-		ykeys: yKeys,
-		lineColors: ['#0c4cb2', '#ed8610','#edda0f', '#0ac933', '#890ac9'],
-		labels: labels,
-		lineWidth: 7,
-		xLabels: xLabels
-	});
-}
+
+	function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
+		Morris.Line({
+			element: elementname,
+			data: data,
+			xkey: 'x',
+			ykeys: yKeys,
+			lineColors: ['#0c4cb2', '#ed8610', '#edda0f', '#0ac933', '#890ac9'],
+			labels: labels,
+			lineWidth: 7,
+			xLabels: xLabels
+		});
+	}
+	function drawtThemesByGroup(data) {
+		
+		Highcharts.chart('themesByGroup', {
+			chart: {
+				type: 'scatter'
+			},
+			title: {
+				text: 'GROUP AND SENTIMENT'
+			},
+			xAxis: {
+				categories: ['ORGANIZATION', 'SERVICE', 'PRODUCT', 'PRICE', 'EMPLOYEE']
+			},
+			credits: {
+				enabled: false
+			},
+			series: data
+		});
+	}
+
 });
