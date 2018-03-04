@@ -22,6 +22,11 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('themes', function ($scope, $http, $filter) {
+	var noOfdocs = [];
+	var data = [];
+	var count = 0;
+	$scope.count = 0;
+	$scope.datapoints = [];
 	var dataOfThemesByTime = [], count = 0;
 	var graphData = [];
 	var brand = [];
@@ -54,31 +59,78 @@ app.controller('themes', function ($scope, $http, $filter) {
 			brand = 0, service = 0, employee = 0, product = 0;
 		}
 		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service', 'Employee'], "Time", ['brand', 'price', 'product', 'service', 'employee']);
-		$http.get('/themesbygroup').then(function (response) {
-			for (var i = 0; i < response.data.aggregations["0"].results.length; i++) {
-				var result = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results;
-				for (var j = 0; j < result.length; j++) {
-					datapoints[result[j].key] = result[j].aggregations["0"].value.toFixed(2);
-					console.log(result[j]);
-					for (var k = 0; k < result[j].aggregations[1].results.length; k++)
-						sentiments[result[j].aggregations[1].results[k].key] = result[j].aggregations[1].results[k].matching_results;
-					console.log(sentiments);
-
-					datapoints[count++] = {
-						name: result[j].key + ' -> SENTIMENTS : ' + result[j].aggregations["0"].value.toFixed(2),
-						colorByPoint: true,
-						data: [{ x: sentiments['negative'], y: sentiments['neutral'], z: sentiments['positive'] }]
-					}
-
-				}
-				graphData[i] = { name: response.data.aggregations["0"].results[i].key, data: [parseFloat(datapoints['ORGANIZATION']), parseFloat(datapoints['SERVICE']), parseFloat(datapoints['PRODUCT']), parseFloat(datapoints['PRICE']), parseFloat(datapoints['EMPLOYEE'])] };
-
-			}
-			drawtThemesByGroup(graphData, datapoints);
-		});
-
 	});
 
+	
+	$http.get('/themesbygroup').then(function (response) {
+		for (var i = 0; i < response.data.aggregations["0"].results.length; i++) {
+			var result = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results;
+			datapoints = [];
+			for (var j = 0; j < result.length; j++) {
+				data = [];
+				for (var k = 0; k < result[j].aggregations[1].results.length; k++)
+					data[data.length] = { 'sentiment': result[j].aggregations[1].results[k].key, 'records': result[j].aggregations[1].results[k].matching_results };
+				datapoints[datapoints.length] = { 'graphId': count++, 'sentimentValue': result[j].aggregations["0"].value.toFixed(2), 'State': result[j].key, data: data };
+			}
+			$scope.datapoints[$scope.datapoints.length] = { 'group': response.data.aggregations["0"].results[i].key, datapoints: datapoints };
+		}
+		console.log($scope.datapoints);
+	})
+
+	$scope.drawtThemesByGroup = function (id, data, sentimentValue) {
+		if ($scope.count < 10) {
+			$scope.count = $scope.count + 1;
+			var width = 150,
+				height = 150,
+				radius = Math.min(width, height) / 2;
+
+			var color = d3.scale.ordinal()
+				.range(["#f44248","#08a7c4","#09c451"]);
+
+			var arc = d3.svg.arc()
+				.outerRadius(radius - 10)
+				.innerRadius(radius - 40);
+
+			var pie = d3.layout.pie()
+				.sort(null)
+				.value(function (d) { return d.records; });
+
+			var svg = d3.select(id).append("svg")
+				.attr("width", width)
+				.attr("height", height)
+				.append("g")
+				.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+			/* d3.csv("data.csv", type, function(error, data) {
+				if (error) throw error;					  
+			 */var g = svg.selectAll(".arc")
+				.data(pie(data))
+				.enter().append("g")
+				.attr("class", "arc");
+
+			g.append("path")
+				.attr("d", arc)
+				.style("fill", function (d) { return color(d.data.sentiment); });
+
+			g.append("text")
+				.attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+				.attr("dy", ".35em")
+				.text(function (d) { return d.data.sentiment; });
+
+			g.append("text")
+				.attr("dy", ".35em")
+				.style("text-anchor", "middle")
+				.text(function (d) { return sentimentValue; });
+
+			/* 	});	 */
+			function type(d) {
+				d.records = +d.records;
+				return d;
+			}
+
+		}
+	}
 	function drawLineGraph(elementname, data, labels, xLabels, yKeys) {
 		Morris.Line({
 			element: elementname,
@@ -93,136 +145,6 @@ app.controller('themes', function ($scope, $http, $filter) {
 			xLabels: xLabels
 		});
 	}
-	function drawtThemesByGroup(data, datapoints) {
-		Highcharts.chart('themesByGroup', {
-			chart: {
-				type: 'scatter'
-			},
-			title: {
-				text: 'GROUP AND SENTIMENT'
-			},
-			yAxis: {
-				title: { text: 'Sentiments' }
-			},
-			xAxis: {
-				categories: ['ORGANIZATION', 'SERVICE', 'PRODUCT', 'PRICE', 'EMPLOYEE']
-			},
-			credits: {
-				enabled: false
-			},
-			series: data
-		});
-
-
-		Highcharts.setOptions({
-			colors: $.map(Highcharts.getOptions().colors, function (color) {
-				return {
-					radialGradient: {
-						cx: 0.4,
-						cy: 0.3,
-						r: 0.5
-					},
-					stops: [
-						[0, color],
-						[1, Highcharts.Color(color).brighten(-0.2).get('rgb')]
-					]
-				};
-			})
-		});
-
-		// Set up the chart
-		var chart = new Highcharts.Chart({
-			chart: {
-				renderTo: 'container',
-				margin: 100,
-				type: 'scatter3d',
-				options3d: {
-					enabled: true,
-					alpha: 10,
-					beta: 30,
-					depth: 250,
-					viewDistance: 5,
-					fitToPlot: false,
-					frame: {
-						bottom: { size: 1, color: 'rgba(0,0,0,0.02)' },
-						back: { size: 1, color: 'rgba(0,0,0,0.04)' },
-						side: { size: 1, color: 'rgba(0,0,0,0.06)' }
-					}
-				}
-			},
-			title: {
-				text: 'SENTMENTS OF DATA POINTS'
-			},
-			plotOptions: {
-				scatter: {
-					width: 10,
-					height: 10,
-					depth: 10
-				}
-			},
-			yAxis: {
-				min: 0,
-				max: 200,
-				title: { text: 'NUTRAL' },
-				gridLineWidth: 1
-			},
-			xAxis: {
-				min: 0,
-				max: 300,
-				title: { text: 'NEGATIVE' },
-				gridLineWidth: 1
-			},
-			zAxis: {
-				min: 0,
-				max: 200,
-				title: { text: 'POSITIVE' },
-				gridLineWidth: 1
-			},
-			legend: {
-				enabled: false
-			},
-			credits: {
-				enabled: false
-			},
-			tooltip: {
-				formatter: function () {
-					return '<b>'+this.series.name +'</b> <br/>POSITIVE: <b>' + this.point.z + '</b><br/>NEGATIVE: <b>' + this.x + '</b> <br> NUTRAL: <b>' + this.y + '</b>';
-				}
-			},
-			series: datapoints
-		});
-
-
-		// Add mouse events for rotation
-		$(chart.container).on('mousedown.hc touchstart.hc', function (eStart) {
-			eStart = chart.pointer.normalize(eStart);
-
-			var posX = eStart.chartX,
-				posY = eStart.chartY,
-				alpha = chart.options.chart.options3d.alpha,
-				beta = chart.options.chart.options3d.beta,
-				newAlpha,
-				newBeta,
-				sensitivity = 5; // lower is more sensitive
-
-			$(document).on({
-				'mousemove.hc touchmove.hc': function (e) {
-					// Run beta
-					e = chart.pointer.normalize(e);
-					newBeta = beta + (posX - e.chartX) / sensitivity;
-					chart.options.chart.options3d.beta = newBeta;
-
-					// Run alpha
-					newAlpha = alpha + (e.chartY - posY) / sensitivity;
-					chart.options.chart.options3d.alpha = newAlpha;
-
-					chart.redraw(false);
-				},
-				'mouseup touchend': function () {
-					$(document).off('.hc');
-				}
-			});
-		});
-
-	}
 });
+
+

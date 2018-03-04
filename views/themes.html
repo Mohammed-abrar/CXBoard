@@ -1,49 +1,48 @@
-
-<div id="page-wrapper" ng-cotroller = "mycontroller">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> Time and Sentiment</h3>
-                    <div id="themesByTime" style="height: 300px;"></div>
+<div id="page-wrapper" ng-cotroller="mycontroller">
+    
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <h3 class="box-title"> Time and Sentiment</h3>
+                        <div id="themesByTime" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+                <div ng-repeat="dataGroup in datapoints" class="white-box">
+                    <div class="row">
+                        <h3 class="box-title"> {{dataGroup.group}} </h3>
+                        <div ng-repeat=" datapoint in dataGroup.datapoints" class="col col-md-2">
+                            <div id="chart{{datapoint.graphId}}" ng-init="">
+                                {{ drawtThemesByGroup('#chart'+datapoint.graphId,datapoint.data,datapoint.sentimentValue) }}
+                            </div>
+                            <center>{{datapoint.State}} </center>
+                            <div class="col col-md-2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <h3 class="box-title"> NPS/Rating and Sentiment </h3>
+                        <div id="themesRating" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <h3 class="box-title"> NPS/Rating and Time</h3>
+                        <div id="themesRatingWithTime" style="height: 300px;"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="white-box">
-                    <h3 class="box-title"> Group and Sentiment</h3>
-                    <div id="themesByGroup" style="height: 300px;"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="white-box">
-                    <h3 class="box-title">Sentments of Data Points</h3>
-                    <div id="container" style="height: 300px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> NPS/Rating and Sentiment </h3>
-                    <div id="themesRating" style="height: 300px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> NPS/Rating and Time</h3>
-                    <div id="themesRatingWithTime" style="height: 300px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
