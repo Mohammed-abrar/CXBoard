@@ -32,15 +32,18 @@
 		<![endif]-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
   <script type="text/javascript" src="js/sunburst.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-3d.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
 </head>
 
 <body ng-app="myApp" >
   <!-- Preloader -->
-  <div class="preloader">
+  <!-- <div class="preloader">
     <div class="cssload-speeding-wheel"></div>
-  </div>
+  </div> -->
   <div id="wrapper">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -53,16 +56,7 @@
             <b>CXBoard</b>
           </a>
         </div>
-        <ul class="nav navbar-top-links navbar-left m-l-20 hidden-xs">
-          <li>
-            <form role="search" class="app-search hidden-xs">
-              <a href="">
-                <i class="fa fa-search"></i>
-              </a>
-              <input type="text" placeholder="&nbsp;&nbsp;Search..." class="form-control">
-            </form>
-          </li>
-        </ul>
+       
         <ul class="nav navbar-top-links navbar-right pull-right">
           <li>
             <a class="profile-pic" href="#">
@@ -122,8 +116,12 @@
     <!-- Left navbar-header end -->
 
     <!-- Page Content -->
-    <div ng-view></div>
-
+    <div ng-view>
+      <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+      </div>
+    </div>
+    
     <!-- /#wrapper -->
     <!-- jQuery -->
     <script src="../plugins/bower_components/jquery/dist/jquery.min.js"></script>
