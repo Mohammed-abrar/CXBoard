@@ -31,11 +31,11 @@ ul > li {
 
                         <!-- <ul style="list-style-type:circle;"> -->
                            <center>      <ul class="list-horizontal">
-                            <li style="color:#0c4cb2;font-weight: bold;margin-right: 20px " >BRAND</li>
-                            <li style="color:#ed8610 ;font-weight: bold;margin-right: 20px ">PRICE</li>
-                            <li style="color:#edda0f ;font-weight: bold;margin-right: 20px ">PRODUCT</li>
-                            <li style="color:#0ac933;font-weight: bold;margin-right: 20px  ">SERVICE</li>
-                            <li style="color:#890ac9 ;font-weight: bold;margin-right: 20px ">EMPLOYEE</li>
+                            <li style="color:#0c4cb2;margin-right: 20px " >Brand</li>
+                            <li style="color:#ed8610 ;margin-right: 20px ">Price</li>
+                            <li style="color:#edda0f;margin-right: 20px ">Product</li>
+                            <li style="color:#0ac933;margin-right: 20px  ">Service</li>
+                            <li style="color:#890ac9 ;margin-right: 20px ">Employee</li>
 
                         </ul>     </center>
 
@@ -44,21 +44,24 @@ ul > li {
             </div>
         </div>
     </div>
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
         <div ng-repeat="dataGroup in datapoints" class="white-box">
             <div class="row">
-                <h3 class="box-title"> {{dataGroup.group}} </h3>
+                <h3      > {{dataGroup.group}} </h3>
                 <div ng-repeat=" datapoint in dataGroup.datapoints" class="col col-md-2">
                     <div id="chart{{datapoint.graphId}}" ng-init="">
                         {{ drawtThemesByGroup('#chart'+datapoint.graphId,datapoint.data,datapoint.sentimentValue) }}
                     </div>
-                    <center>{{datapoint.State}} </center>
+                     <center>{{datapoint.State}} </center> 
                     <div class="col col-md-2">
                     </div>
                 </div>
+                 
             </div>
+            
         </div>
-    </div>
+        
+    </div> -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">

@@ -41,11 +41,11 @@ app.controller('themes', function ($scope, $http, $filter) {
 		for (var i = 0; i < response.data.aggregations["0"].results.length; i++) {
 			for (var j = 0; j < response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results.length; j++) {
 				switch (response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].key) {
-					case 'PRODUCT': service = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+					case 'PRODUCT': product = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
 						break;
 					case 'EMPLOYEE': employee = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
 						break;
-					case 'SERVICE': product = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
+					case 'SERVICE':  service= response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
 						break;
 					case 'PRICE': price = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results[j].aggregations["0"].value;
 						break;
@@ -53,9 +53,9 @@ app.controller('themes', function ($scope, $http, $filter) {
 				}
 			}
 			brand = response.data.aggregations["0"].results[i].aggregations["0"].aggregations["0"].aggregations["0"].results["0"].aggregations["0"].value;
-			var d = new Date(response.data.aggregations["0"].results[i].key_as_string)
-		
-			dataOfThemesByTime.push({ x: d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate() , brand: brand.toFixed(2), price: price.toFixed(2), product: product.toFixed(2), employee: employee.toFixed(2), service: service.toFixed(2) });
+			var d = response.data.aggregations["0"].results[i].key_as_string.substr(0,7 );
+			
+			dataOfThemesByTime.push({ x: d , brand: brand.toFixed(2), price: price.toFixed(2), product: product.toFixed(2), employee: employee.toFixed(2), service: service.toFixed(2) });
 			brand = 0, service = 0, employee = 0, product = 0;
 		}
 		drawLineGraph('themesByTime', dataOfThemesByTime, ['Brand', 'Price', 'Product', 'Service', 'Employee'], "Time", ['brand', 'price', 'product', 'service', 'employee']);
