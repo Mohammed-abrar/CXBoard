@@ -163,12 +163,12 @@ return UNIX_timestamp; //need to change this, json contains month, so returning 
 }
 // Chart dimensions.
 var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
-    width = 800 - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 1014 - margin.right - margin.left,
+    height = 500 - margin.top - margin.bottom;
 
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.log().domain([3, 6]).range([0, width]),
-    yScale = d3.scale.linear().domain([-1, 1]).range([height, 0]),
+var xScale = d3.scale.log().domain([2, 8]).range([0, width]),
+    yScale = d3.scale.linear().domain([-0.6, 0.2]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 500]).range([1, 50]),
     colorScale = d3.scale.category20();
 
@@ -201,7 +201,7 @@ svg.append("text")
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", height - 6)
-    .text("Rating");
+    .text("NPS Rating");
 
 // Add a y-axis label.
 svg.append("text")
@@ -216,7 +216,7 @@ svg.append("text")
 var label = svg.append("text")
     .attr("class", "year label")
     .attr("text-anchor", "end")
-    .attr("y", height - 24)
+    .attr("y", height - 50)
     .attr("x", width)
     .text(" ");
 
@@ -224,8 +224,29 @@ var label = svg.append("text")
 var countrylabel = svg.append("text")
     .attr("class", "country label")
     .attr("text-anchor", "start")
-    .attr("y", 80)
+    .attr("y", 20)
     .attr("x", 20)
+    .text(" ");
+
+var sentimentlbl = svg.append("text")
+    .attr("class", "other label")
+    .attr("text-anchor", "start")
+    .attr("y", 0)
+    .attr("x", width - 300)
+    .text(" ");
+
+var npsratinglbl = svg.append("text")
+    .attr("class", "other label")
+    .attr("text-anchor", "start")
+    .attr("y", 20)
+    .attr("x", width - 300)
+    .text(" ");
+
+var frequencylbl = svg.append("text")
+    .attr("class", "other label")
+    .attr("text-anchor", "start")
+    .attr("y", 40)
+    .attr("x", width - 300)
     .text(" ");
 
 var first_time = true;
@@ -244,7 +265,7 @@ d3.json("themesbyNpsApi2", function(nations) {
   var dot = svg.append("g")
       .attr("class", "dots")
     .selectAll(".dot")
-      .data(interpolateData(dragit.time.max))
+      .data(interpolateData(dragit.time.min))
     .enter().append("circle")
       .attr("class", "dot")
       .style("fill", function(d) { return colorScale(color(d)); })
@@ -253,20 +274,22 @@ d3.json("themesbyNpsApi2", function(nations) {
 
       })
       .on("mouseup", function(d, i) {
-        dot.classed("selected", false);
-        d3.select(this).classed("selected", !d3.select(this).classed("selected"));
-        dragit.trajectory.display(d, i, "selected");
+        // dot.classed("selected", false);
+        // d3.select(this).classed("selected", !d3.select(this).classed("selected"));
+        // dragit.trajectory.display(d, i, "selected");
 
         //TODO: test if has been dragged
         // Look at the state machine history and find a drag event in it?
 
       })
       .on("mouseenter", function(d, i) {
-        clear_demo();
         if(dragit.statemachine.current_state == "idle") {
-          dragit.trajectory.display(d, i)
-          dragit.utils.animateTrajectory(dragit.trajectory.display(d, i), dragit.time.current, 1000)
+          // dragit.trajectory.display(d, i)
+          // dragit.utils.animateTrajectory(dragit.trajectory.display(d, i), dragit.time.current, 1000)
           countrylabel.text(d.name);
+          sentimentlbl.text('Sentiment: ' + d.lifeExpectancy);
+          frequencylbl.text('Frequency: ' + d.population);
+          npsratinglbl.text('NPS Rating: ' + d.income);
           dot.style("opacity", .4)
           d3.select(this).style("opacity", 1)
           d3.selectAll(".selected").style("opacity", 1)
@@ -276,12 +299,15 @@ d3.json("themesbyNpsApi2", function(nations) {
 
         if(dragit.statemachine.current_state == "idle") {
           countrylabel.text("");
+          sentimentlbl.text("");
+          frequencylbl.text("");
+          npsratinglbl.text("");
           dot.style("opacity", 1);
         }
   
-        dragit.trajectory.remove(d, i);
+        // dragit.trajectory.remove(d, i);
       })
-      .call(dragit.object.activate)
+      // .call(dragit.object.activate)
 
   // Add a title.
   dot.append("title")
@@ -306,9 +332,9 @@ d3.json("themesbyNpsApi2", function(nations) {
 
   // Updates the display to show the specified year.
   function displayYear(year) {
-	  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     dot.data(interpolateData(year+dragit.time.min), key).call(position);//.sort(order);
-    label.text(months[dragit.time.min + Math.round(year)]);
+    label.text(months[(dragit.time.min + Math.round(year))-1]);
   }
 
   // Interpolates the dataset for the given (fractional) year.
@@ -316,7 +342,7 @@ d3.json("themesbyNpsApi2", function(nations) {
     return nations.map(function(d) {
       return {
         name: d.name,
-        region: d.region,
+        region: d.name,
         income: interpolateValues(d.income, year),
         population: interpolateValues(d.population, year),
         lifeExpectancy: interpolateValues(d.lifeExpectancy, year)
@@ -344,7 +370,7 @@ d3.json("themesbyNpsApi2", function(nations) {
   function update(v, duration) {
   
     dragit.time.current = v || dragit.time.current;
-    displayYear(dragit.time.current)
+    displayYear(v)
     d3.select("#slider-time").property("value", dragit.time.current);
   }
 
@@ -425,8 +451,8 @@ var demo_interval = null;
 setTimeout(function() {
   if(first_time) {
 	//   console.log("1");
-    play_demo()
-    demo_interval = setInterval(play_demo, 3000)
+    // play_demo()
+    // demo_interval = setInterval(play_demo, 3000)
   }
 }, 1000);
 
