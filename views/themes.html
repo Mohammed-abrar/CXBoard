@@ -1,137 +1,138 @@
 <style>
 ul > li {
-    display: inline-block;
-    /* You can also add some margins here to make it look prettier */
-    zoom:1;
-    *display:inline;
-    /* this fix is needed for IE7- */
+  display: inline-block;
+  /* You can also add some margins here to make it look prettier */
+  zoom:1;
+  *display:inline;
+  /* this fix is needed for IE7- */
 }
 .list-horizontal li {
 	display:inline-block;
-      zoom:1;
-    *display:inline;
-   text-align: center;
-}   
+   zoom:1;
+  *display:inline;
+  text-align: center;
+}  
 .list-horizontal li:before {
 	content: '\00a0\2022\00a0\00a0';
 	font-size:30px;
-    position: inherit;
+  position: inherit;
 }
 .dot {
-  stroke: #000;
+ stroke: #000;
 }
-
+​
 .axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+ fill: none;
+ stroke: #000;
+ shape-rendering: crispEdges;
 }
-
+​
 .label {
-  fill: #777;
+ fill: #777;
 }
-
+​
 .year.label {
-  font: 500 60px "Helvetica Neue";
-  fill: #ddd;
+ font: 500 60px "Helvetica Neue";
+ fill: #ddd;
 }
-
-.country.label  {
-  font: 500 30px "Helvetica Neue";
-  fill: #ddd;
+​
+.country.label {
+ font: 500 30px "Helvetica Neue";
+ fill: #ddd;
 }
-
-.other.label  {
-  font: 300 20px "Helvetica Neue";
-  fill: #aaaaaa;
+​
+.other.label {
+ font: 300 20px "Helvetica Neue";
+ fill: #aaaaaa;
 }
-
+​
 .year.label.active {
-  fill: #aaa;
+ fill: #aaa;
 }
-
+​
 circle.pointTrajectory {
-   pointer-events: none;
-   stroke: lightgray;
-   fill: black;
-   opacity: 0;
-}
-
-path.lineTrajectory {
-  stroke-width: 2;
-  stroke-opacity: .5;
-  stroke: black;
-  fill: none;
   pointer-events: none;
+  stroke: lightgray;
+  fill: black;
+  opacity: 0;
 }
-
+​
+path.lineTrajectory {
+ stroke-width: 2;
+ stroke-opacity: .5;
+ stroke: black;
+ fill: none;
+ pointer-events: none;
+}
+​
 .selected {
-  stroke-width: 4;
+ stroke-width: 4;
 }
 </style>
 <div id="page-wrapper" ng-cotroller="mycontroller">
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> Time and Sentiment</h3>
-                    <div id="themesByTime" style="height: 300px;"></div>
-                   
-
-                        <!-- <ul style="list-style-type:circle;"> -->
-                           <center>      <ul class="list-horizontal">
-                            <li style="color:#0c4cb2;margin-right: 20px " >Brand</li>
-                            <li style="color:#ed8610 ;margin-right: 20px ">Price</li>
-                            <li style="color:#edda0f;margin-right: 20px ">Product</li>
-                            <li style="color:#0ac933;margin-right: 20px  ">Service</li>
-                            <li style="color:#890ac9 ;margin-right: 20px ">Employee</li>
-
-                        </ul>     </center>
-
-                  
-                </div>
-            </div>
+​
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="white-box">
+          <h3 class="box-title"> Time and Sentiment</h3>
+          <div id="themesByTime" style="height: 300px;"></div>
+          
+​
+            <!-- <ul style="list-style-type:circle;"> -->
+              <center>   <ul class="list-horizontal">
+              <li style="color:#0c4cb2;margin-right: 20px " > <span style="color:#000">Brand</span></li>
+              <li style="color:#ed8610 ;margin-right: 20px "> <span style="color:#000">Price</span></li>
+              <li style="color:#edda0f;margin-right: 20px "> <span style="color:#000">Product</span></li>
+              <li style="color:#0ac933;margin-right: 20px "> <span style="color:#000">Service</span></li>
+              <li style="color:#890ac9 ;margin-right: 20px "> <span style="color:#000">Employee</span></li>
+​
+            </ul>   </center>
+​
+         
         </div>
+      </div>
     </div>
-    <!-- <div class="container-fluid">
-        <div ng-repeat="dataGroup in datapoints" class="white-box">
-            <div class="row">
-                <h3      > {{dataGroup.group}} </h3>
-                <div ng-repeat=" datapoint in dataGroup.datapoints" class="col col-md-2">
-                    <div id="chart{{datapoint.graphId}}" ng-init="">
-                        {{ drawtThemesByGroup('#chart'+datapoint.graphId,datapoint.data,datapoint.sentimentValue) }}
-                    </div>
-                     <center>{{datapoint.State}} </center> 
-                    <div class="col col-md-2">
-                    </div>
-                </div>
-                 
-            </div>
-            
+  </div>
+  <!-- <div class="container-fluid">
+    <div ng-repeat="dataGroup in datapoints" class="white-box">
+      <div class="row">
+        <h3   > {{dataGroup.group}} </h3>
+        <div ng-repeat=" datapoint in dataGroup.datapoints" class="col col-md-2">
+          <div id="chart{{datapoint.graphId}}" ng-init="">
+            {{ drawtThemesByGroup('#chart'+datapoint.graphId,datapoint.data,datapoint.sentimentValue) }}
+          </div>
+           <center>{{datapoint.State}} </center> 
+          <div class="col col-md-2">
+          </div>
         </div>
-        
-    </div> -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> NPS/Rating and Sentiment </h3>
-                    <div id="themesRating" style="height: 300px;"></div>
-                </div>
-            </div>
-        </div>
+         
+      </div>
+      
     </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title"> NPS/Rating and Time</h3>
-                    <div id="themesRatingWithTime" style="margin:0px;height: 500px;"></div>
-                    <input type="range" name="points" step="1" value="0" id="slider-time" >
-                    <!-- <div id="themesRatingWithTime" style="height: 300px;"></div> -->
-                </div>
-            </div>
+    
+  </div> -->
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="white-box">
+          <h3 class="box-title"> NPS/Rating and Sentiment</h3>
+          <div id="themesRatingWithTime" style="margin:0px;height: 500px;"></div>
+          <input type="range" name="points" step="1" value="0" id="slider-time" >
+          <!-- <div id="themesRatingWithTime" style="height: 300px;"></div> -->
         </div>
+      </div>
     </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="white-box">
+          <h3 class="box-title"> NPS/Rating and Time </h3>
+          <div id="themesRating" style="height: 300px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

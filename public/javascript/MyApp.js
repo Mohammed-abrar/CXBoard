@@ -140,7 +140,7 @@ app.controller('themes', function ($scope, $http, $filter) {
 			hideHover : 'auto',
 			lineColors: ['#0c4cb2', '#ed8610', '#edda0f', '#0ac933', '#890ac9'],
 			labels: labels,
-			lineWidth: 7,
+			lineWidth: 4,
 			parseTime : false,
 			xLabels: xLabels
 		});
